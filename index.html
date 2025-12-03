@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Rayleigh 12 PC Hub – Interactive</title>
+  <title>Rayleigh 12 PC AI Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
     :root {
       --primary: #1e3a8a;
       --primary-light: #3b82f6;
-      --bg: #0f172a;
-      --card-bg: #111827;
+      --bg: #020617;
+      --card-bg: #0b1220;
       --accent: #facc15;
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
@@ -21,66 +21,44 @@
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
       background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%);
       color: var(--text-main);
-      min-height: 100vh;
       display: flex;
       justify-content: center;
       padding: 1rem;
     }
 
-    .app { width: 100%; max-width: 1100px; margin: auto; }
-
-    header { text-align: center; margin-bottom: 1.5rem; }
-
-    header h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 0.25rem; }
-
-    header p { font-size: 0.9rem; color: var(--text-muted); }
-
-    .day-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      font-size: 0.8rem;
-      margin-top: 0.4rem;
+    .app {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
     }
 
-    .layout {
-      display: grid;
-      gap: 1rem;
+    header {
+      text-align: center;
+      margin-bottom: 1.2rem;
     }
 
-    @media (min-width: 880px) {
-      .layout {
-        grid-template-columns: 3fr 2.2fr;
-        align-items: start;
-      }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
 
-    .grid {
-      display: grid;
-      gap: 1rem;
-    }
-
-    @media (min-width: 720px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
+    header p {
+      margin-top: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
     }
 
     .card {
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(11, 18, 32, 0.96);
       border-radius: 1rem;
       border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.85);
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.9);
       padding: 1rem 1.1rem 1.1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
+      margin-bottom: 1rem;
     }
 
     .card-header {
@@ -88,6 +66,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 0.5rem;
+      margin-bottom: 0.6rem;
     }
 
     .card-title {
@@ -104,23 +83,53 @@
       letter-spacing: 0.08em;
       padding: 0.1rem 0.4rem;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.6);
       color: var(--text-muted);
     }
 
-    .card-body {
-      font-size: 0.9rem;
-      line-height: 1.45;
-      color: var(--text-main);
-      white-space: pre-line;
+    .small-caps {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
-
-    .card-body p + p { margin-top: 0.4rem; }
 
     .hint {
       font-size: 0.75rem;
       color: var(--text-muted);
-      margin-top: 0.25rem;
+      margin-top: 0.35rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 70px;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      padding: 0.5rem 0.6rem;
+      resize: vertical;
+      margin-top: 0.35rem;
+    }
+
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.9);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 0.45rem 0 0.5rem;
+    }
+
+    .pill {
+      font-size: 0.72rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: var(--text-muted);
     }
 
     button {
@@ -144,84 +153,46 @@
       box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
     }
 
-    .outline-btn {
-      background: transparent;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      box-shadow: none;
-      color: var(--text-main);
-    }
-
     button:disabled {
-      opacity: 0.65;
+      opacity: 0.6;
       cursor: wait;
       box-shadow: none;
     }
 
-    .small-caps {
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 0.75rem;
-      color: var(--text-muted);
+    .outline-btn {
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      box-shadow: none;
+      color: var(--text-main);
     }
 
-    .music-frame {
-      border-radius: 0.75rem;
-      overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      margin-top: 0.4rem;
-    }
-
-    iframe { width: 100%; border: 0; }
-
-    .footer-note {
-      text-align: center;
-      margin-top: 1.3rem;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    .footer-note span { color: var(--accent); }
-
-    .ai-output {
-      margin-top: 0.4rem;
-      padding: 0.55rem 0.6rem;
-      border-radius: 0.75rem;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: rgba(15, 23, 42, 0.85);
-      min-height: 60px;
-      font-size: 0.9rem;
-      line-height: 1.4;
-      overflow-y: auto;
-      max-height: 260px;
-    }
-
-    .pill-row {
+    .button-row {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
-      margin-top: 0.25rem;
+      margin-top: 0.5rem;
     }
 
-    .pill {
-      font-size: 0.72rem;
-      padding: 0.1rem 0.45rem;
-      border-radius: 999px;
+    .ai-output {
+      margin-top: 0.6rem;
+      padding: 0.6rem 0.65rem;
+      border-radius: 0.75rem;
       border: 1px solid rgba(148, 163, 184, 0.6);
-      color: var(--text-muted);
-    }
-
-    .api-key-warning {
-      font-size: 0.75rem;
-      color: var(--danger);
-      margin-top: 0.3rem;
+      background: rgba(15, 23, 42, 0.95);
+      min-height: 80px;
+      max-height: 260px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      white-space: pre-line;
     }
 
     .toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.4rem;
-      margin-top: 0.25rem;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
       font-size: 0.78rem;
       color: var(--text-muted);
     }
@@ -240,298 +211,376 @@
       cursor: pointer;
     }
 
-    .api-key-input {
-      width: 100%;
-      margin-top: 0.4rem;
-      padding: 0.4rem 0.5rem;
-      border-radius: 0.6rem;
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-main);
-      font-size: 0.78rem;
+    .music-frame {
+      border-radius: 0.85rem;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      margin-top: 0.6rem;
     }
 
-    .api-key-input::placeholder {
-      color: rgba(148, 163, 184, 0.8);
+    iframe {
+      width: 100%;
+      border: 0;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 0.9rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .footer-note span {
+      color: var(--accent);
+    }
+
+    /* Time + weather */
+    .clock-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .clock-main {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    .clock-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      width: 100%;
+    }
+
+    .weather-slot {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 0.4rem 0.45rem;
+      font-size: 0.78rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .weather-time {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .weather-temp {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .weather-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .weather-error {
+      font-size: 0.75rem;
+      color: var(--danger);
+      margin-top: 0.3rem;
+    }
+
+    @media (max-width: 500px) {
+      .clock-main {
+        font-size: 1.5rem;
+      }
+      .weather-grid {
+        gap: 0.35rem;
+      }
     }
   </style>
-
-  <!-- OurManna Verse of the Day -->
-  <script src="https://beta.ourmanna.com/verses/api/js/" type="text/javascript" defer></script>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>Rayleigh 12 PC Hub</h1>
-      <p>Pastoral Care · Monday / Wednesday / Thursday / Friday · ~10 minutes</p>
-      <div class="day-chip">
-        <span id="today-label">Today</span>
-      </div>
+      <h1>Rayleigh 12 PC AI Hub</h1>
+      <p>10-minute Pastoral Care assistant · Christian, age-appropriate content</p>
     </header>
 
-    <div class="layout">
-      <!-- LEFT: Normal PC flow -->
-      <div>
-        <div class="grid">
-          <!-- Opening Prayer -->
-          <section class="card">
-            <div class="card-header">
-              <div class="card-title">🙏 Opening Prayer</div>
-              <span class="badge">Step 1</span>
-            </div>
-            <div class="card-body" id="prayer-text">
-              Heavenly Father, thank You for this new day and for Rayleigh 12.
-              Help us to honour You in our thoughts, words and actions today.
-              Give us wisdom in our decisions, kindness in our friendships,
-              and courage to do what is right.
-
-              Be with us in this PC time. Calm our hearts, clear our minds,
-              and help us to grow together as a class. In Jesus’ name, Amen.
-            </div>
-            <p class="hint">Use this, or tap “Generate Prayer” on the right to create one for today's theme.</p>
-          </section>
-
-          <!-- Verse of the Day -->
-          <section class="card">
-            <div class="card-header">
-              <div class="card-title">📖 Verse & Reflection</div>
-              <span class="badge">Step 2</span>
-            </div>
-            <div class="card-body">
-              <div id="ourmanna-verse">Loading verse of the day…</div>
-              <p class="hint" id="verse-hint">
-                <strong>Discussion prompt:</strong> In one sentence, how could we live this verse out at school today?
-              </p>
-            </div>
-            <button type="button" class="outline-btn" onclick="nextVersePrompt()">
-              🔄 New discussion prompt
-            </button>
-          </section>
-
-          <!-- Positive Thought -->
-          <section class="card">
-            <div class="card-header">
-              <div class="card-title">🌟 Positive Thought</div>
-              <span class="badge">Step 3</span>
-            </div>
-            <div class="card-body">
-              <p id="positive-text">
-                Today is a fresh start. Yesterday’s mistakes are learning moments, not labels.
-                You have the chance to choose courage, kindness, and faith again today.
-              </p>
-              <p class="hint">Read it aloud, then ask: “What word or phrase stands out to you?”</p>
-            </div>
-            <button type="button" onclick="newPositiveThought()">
-              🔁 New positive thought
-            </button>
-          </section>
-
-          <!-- Music + Game -->
-          <section class="card">
-            <div class="card-header">
-              <div class="card-title">🎵 Music & Game of the Day</div>
-              <span class="badge">Step 4</span>
-            </div>
-            <div class="card-body">
-              <p class="small-caps">Background Music</p>
-              <p>Hit play on a worship / Christian lo-fi playlist while students get settled.</p>
-
-              <!-- Replace with your own playlist ID -->
-              <div class="music-frame">
-                <iframe
-                  src="https://www.youtube.com/embed/videoseries?list=YOUR_PLAYLIST_ID_HERE"
-                  title="PC Background Playlist"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
+    <!-- Time + Weather card -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">🕒 Time & Weather – Rayleigh / Reedy Creek</div>
+        <span class="badge">Today</span>
+      </div>
+      <div class="card-body">
+        <div class="clock-row">
+          <div>
+            <div class="clock-main" id="digital-clock">--:--</div>
+            <div class="clock-label" id="clock-date"></div>
+          </div>
+          <div>
+            <span class="small-caps">Forecast slots</span>
+            <div class="weather-grid">
+              <div class="weather-slot" id="wx-9">
+                <div class="weather-time">9:00am</div>
+                <div class="weather-temp" data-temp>--°C</div>
+                <div class="weather-desc" data-desc>Loading…</div>
               </div>
-
-              <p class="small-caps" style="margin-top:0.7rem;">Community Game of the Day</p>
-              <p id="game-text">
-                Stand Up If…  
-                Ask students to stand if statements apply to them (e.g. “You have a pet”,
-                “You like pineapple on pizza”, “You prefer beaches to mountains”).
-                Quick, fun, and shows what you have in common.
-              </p>
-              <p class="hint">Tap below for another quick game idea, or use the AI assistant to generate one.</p>
+              <div class="weather-slot" id="wx-12">
+                <div class="weather-time">12:00pm</div>
+                <div class="weather-temp" data-temp>--°C</div>
+                <div class="weather-desc" data-desc>Loading…</div>
+              </div>
+              <div class="weather-slot" id="wx-15">
+                <div class="weather-time">3:00pm</div>
+                <div class="weather-temp" data-temp>--°C</div>
+                <div class="weather-desc" data-desc>Loading…</div>
+              </div>
             </div>
-            <button type="button" onclick="newGame()">🎲 New game idea</button>
-          </section>
+          </div>
         </div>
+        <div id="weather-error" class="weather-error"></div>
+      </div>
+    </section>
+
+    <!-- AI PC Assistant -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">🤖 AI PC Assistant</div>
+        <span class="badge">Teacher only</span>
       </div>
 
-      <!-- RIGHT: AI-powered PC assistant -->
-      <aside class="card">
-        <div class="card-header">
-          <div class="card-title">
-            🤖 AI PC Assistant
-          </div>
-          <span class="badge">Teacher tools</span>
+      <div class="card-body">
+        <p class="small-caps">Context for today (optional)</p>
+        <textarea
+          id="context-input"
+          placeholder="e.g. Stress before exams, friendships, gratitude, or paste a Bible verse here…"
+        ></textarea>
+
+        <div class="pill-row">
+          <div class="pill">Year level: 12</div>
+          <div class="pill">Rayleigh PC</div>
+          <div class="pill">Christian school</div>
+          <div class="pill">Approx. 10 minutes</div>
         </div>
 
-        <div class="card-body">
-          
-
-          <div class="toggle-row">
-            <label>
-              <input type="checkbox" id="short-mode" checked />
-              Prefer short, PC-length answers
-            </label>
-          </div>
-
-          <div class="pill-row">
-            <div class="pill">Year level: 12</div>
-            <div class="pill">Christian school</div>
-            <div class="pill">10-minute PC</div>
-            <div class="pill">Rayleigh 12</div>
-          </div>
-
-          <hr style="border: none; border-top: 1px solid rgba(148,163,184,0.4); margin:0.6rem 0;" />
-
-          <p class="small-caps">Generate</p>
-          <div style="display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.35rem;">
-            <button type="button" class="outline-btn" id="btn-prayer" onclick="generateFromAI('prayer')">
-              🕊 Prayer
-            </button>
-            <button type="button" class="outline-btn" id="btn-devotional" onclick="generateFromAI('devotional')">
-              📖 Devotional thought
-            </button>
-            <button type="button" class="outline-btn" id="btn-questions" onclick="generateFromAI('questions')">
-              💬 Discussion questions
-            </button>
-            <button type="button" class="outline-btn" id="btn-game" onclick="generateFromAI('game')">
-              🎲 Community game
-            </button>
-          </div>
-
-          <div class="ai-output" id="ai-output">
-            AI output will appear here. Use it live with the class or copy into Compass.
-          </div>
-
-          <p class="hint">
-            Tip: you can still use the fixed content on the left, then use the AI panel when you want
-            something tailored to that day (e.g. “stress before exams”, “friendship issues”, etc.).
-          </p>
+        <p class="small-caps">Generate</p>
+        <div class="button-row">
+          <button type="button" class="outline-btn" id="btn-prayer" onclick="generateFromAI('prayer')">
+            🕊 Prayer
+          </button>
+          <button type="button" class="outline-btn" id="btn-devotional" onclick="generateFromAI('devotional')">
+            📖 Devotional
+          </button>
+          <button type="button" class="outline-btn" id="btn-questions" onclick="generateFromAI('questions')">
+            💬 Discussion Qs
+          </button>
+          <button type="button" class="outline-btn" id="btn-game" onclick="generateFromAI('game')">
+            🎲 Community game
+          </button>
         </div>
-      </aside>
-    </div>
+
+        <div class="toggle-row">
+          <label>
+            <input type="checkbox" id="short-mode" checked />
+            Prefer short answers (readable in &lt; 2 minutes)
+          </label>
+          <span>Content: Christian, safe, teacher-led</span>
+        </div>
+
+        <div class="ai-output" id="ai-output">
+          AI output will appear here. Use it live with the class or copy into Compass.
+        </div>
+
+        <p class="hint">
+          Tip: Type a quick theme (“gratitude”, “friendship conflict”, “upcoming exams”) before generating
+          to tailor the prayer, devotional, questions, or game.
+        </p>
+      </div>
+    </section>
+
+    <!-- Music: Rayleigh playlist / song -->
+    <section class="card">
+      <div class="card-header">
+        <div class="card-title">🎵 Rayleigh PC Music</div>
+        <span class="badge">Play in background</span>
+      </div>
+      <div class="card-body">
+        <p class="small-caps">YouTube</p>
+        <p>Tap play and let this run quietly during silent reflection or while students settle.</p>
+        <div class="music-frame">
+          <iframe
+            src="https://www.youtube.com/embed/evYZdxlwGhA"
+            title="Rayleigh PC Music"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
 
     <p class="footer-note">
-      <span>Verse of the Day</span> provided by OurManna Bible API.  
-      AI content powered by OpenAI (configured for Christian, age-appropriate PC use).
+      <span>AI content</span> powered via OpenAI (server-side key on Vercel).  
+      Designed for Rayleigh 12 Pastoral Care sessions.
     </p>
   </div>
 
   <script>
-    // ---------- Day label ----------
-    const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-    const pcDays = ["Monday","Wednesday","Thursday","Friday"];
+    // ---------- Digital clock ----------
+    function pad2(n) {
+      return n.toString().padStart(2, "0");
+    }
 
-    function updateTodayLabel() {
+    function updateClock() {
       const now = new Date();
-      const dayName = dayNames[now.getDay()];
-      const label = document.getElementById("today-label");
-      if (pcDays.includes(dayName)) {
-        label.textContent = dayName + " · PC today";
-      } else {
-        label.textContent = dayName + " · No scheduled PC (optional)";
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+
+      const clockEl = document.getElementById("digital-clock");
+      const dateEl = document.getElementById("clock-date");
+
+      // 24h -> 12h display
+      const displayHour = ((hours + 11) % 12) + 1;
+      const ampm = hours >= 12 ? "pm" : "am";
+
+      clockEl.textContent = `${pad2(displayHour)}:${pad2(minutes)}:${pad2(seconds)} ${ampm}`;
+
+      const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      const dayName = weekdays[now.getDay()];
+      const day = now.getDate();
+      const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const month = monthNames[now.getMonth()];
+      dateEl.textContent = `${dayName} · ${day} ${month}`;
+    }
+
+    // ---------- Weather (Open-Meteo, no key required) ----------
+    // Coords roughly for Reedy Creek / Gold Coast region
+    const LAT = -28.11;
+    const LON = 153.41;
+
+    function mapWeatherCode(code) {
+      // Simplified mapping
+      if (code === 0) return "Clear sky";
+      if ([1, 2].includes(code)) return "Mostly clear";
+      if (code === 3) return "Cloudy";
+      if ([45, 48].includes(code)) return "Fog / mist";
+      if ([51, 53, 55].includes(code)) return "Light drizzle";
+      if ([61, 63].includes(code)) return "Rain showers";
+      if (code === 65) return "Heavy rain";
+      if ([71, 73, 75].includes(code)) return "Snow";
+      if ([80, 81, 82].includes(code)) return "Showers";
+      if ([95, 96, 99].includes(code)) return "Storms";
+      return "Mixed conditions";
+    }
+
+    async function loadWeather() {
+      const errorEl = document.getElementById("weather-error");
+      errorEl.textContent = "";
+
+      try {
+        // Request hourly forecast for today in local (Australia/Brisbane) time
+        const url =
+          "https://api.open-meteo.com/v1/forecast" +
+          `?latitude=${LAT}&longitude=${LON}` +
+          "&hourly=temperature_2m,weathercode" +
+          "&timezone=Australia%2FBrisbane";
+
+        const res = await fetch(url);
+        if (!res.ok) {
+          errorEl.textContent = "Unable to load weather.";
+          return;
+        }
+
+        const data = await res.json();
+        const times = data.hourly?.time || [];
+        const temps = data.hourly?.temperature_2m || [];
+        const codes = data.hourly?.weathercode || [];
+
+        if (!times.length) {
+          errorEl.textContent = "No weather data available.";
+          return;
+        }
+
+        // Find today's date string from first time entry
+        const todayStr = times[0].slice(0, 10); // "YYYY-MM-DD"
+
+        const targetHours = { 9: "wx-9", 12: "wx-12", 15: "wx-15" };
+
+        Object.entries(targetHours).forEach(([hour, elemId]) => {
+          const target = `${todayStr}T${hour.padStart ? hour.padStart(2, "0") : ("0" + hour).slice(-2)}:00`;
+          const idx = times.indexOf(target);
+          const slotEl = document.getElementById(elemId);
+          if (!slotEl) return;
+
+          const tempEl = slotEl.querySelector("[data-temp]");
+          const descEl = slotEl.querySelector("[data-desc]");
+
+          if (idx === -1) {
+            tempEl.textContent = "--°C";
+            descEl.textContent = "No data";
+          } else {
+            const temp = Math.round(temps[idx]);
+            const code = codes[idx];
+            tempEl.textContent = `${temp}°C`;
+            descEl.textContent = mapWeatherCode(code);
+          }
+        });
+      } catch (err) {
+        console.error(err);
+        errorEl.textContent = "Weather error.";
       }
     }
 
-    // ---------- Verse discussion prompts ----------
-    const versePrompts = [
-      "What word or phrase in this verse stands out to you the most? Why?",
-      "How could this verse shape the way we treat each other in Rayleigh 12 today?",
-      "If you lived this verse fully for one school day, what would change?",
-      "What does this verse show you about God’s character?",
-      "Is there a simple, practical action you could take today because of this verse?"
-    ];
+    // ---------- AI calls (to your Vercel function using openAPIkey env) ----------
+    async function generateFromAI(type) {
+      const shortMode = document.getElementById("short-mode").checked;
+      const contextInput = document.getElementById("context-input");
+      const outputEl = document.getElementById("ai-output");
 
-    function nextVersePrompt() {
-      const hint = document.getElementById("verse-hint");
-      const random = versePrompts[Math.floor(Math.random() * versePrompts.length)];
-      hint.innerHTML = "<strong>Discussion prompt:</strong> " + random;
-    }
+      const buttons = [
+        "btn-prayer",
+        "btn-devotional",
+        "btn-questions",
+        "btn-game"
+      ].map(id => document.getElementById(id));
 
-    // ---------- Positive thoughts ----------
-    const positiveThoughts = [
-      "You are not here by accident. God has placed you in this PC, in this school, in this year for a reason.",
-      "Small consistent choices — saying sorry, including someone, telling the truth — shape the person you become.",
-      "Even on tough days, you are loved by God and valued by the people around you more than you realise.",
-      "You don’t have to be perfect today. You just have to be willing to learn, grow, and try again.",
-      "Kindness is never wasted. Someone in our school needs the kindness you can show today."
-    ];
+      buttons.forEach(btn => btn.disabled = true);
+      outputEl.textContent = "Thinking… (generating " + type + ")";
 
-    function newPositiveThought() {
-      const el = document.getElementById("positive-text");
-      const random = positiveThoughts[Math.floor(Math.random() * positiveThoughts.length)];
-      el.textContent = random;
-    }
+      const verseText = contextInput.value || "";
 
-    // ---------- Community games ----------
-    const games = [
-      "Two Truths and a Dream: Students share two true facts about themselves and one thing they’d like to do or achieve. The group guesses which is the dream.",
-      "This or That: Quickly go around the room with choices (Beach or mountains? Pizza or burgers? Morning or night?). Students move to a side of the room or raise hands.",
-      "Common Ground: In small groups, students have 2 minutes to find three things they all have in common that aren’t obvious (not uniforms or school).",
-      "High/Low/Thankful: Each student shares a high from the week, a low, and one thing they’re thankful for.",
-      "Silent Line-Up: Without talking, students line up in order of birthday (day/month), height, or alphabetical by first name.",
-      "Would You Rather – Values Edition: Ask fun but thoughtful questions (e.g. 'Would you rather have everyone be honest with you or always be kind to you? Why?')."
-    ];
+      try {
+        const res = await fetch("/api/pc-ai", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type, verseText, shortMode })
+        });
 
-    function newGame() {
-      const el = document.getElementById("game-text");
-      const random = games[Math.floor(Math.random() * games.length)];
-      el.textContent = random;
-    }
-
-    // ---------- AI calls ----------
-   async function generateFromAI(type) {
-    const shortMode = document.getElementById("short-mode").checked;
-    const outputEl = document.getElementById("ai-output");
-
-    // Disable buttons during call
-    const buttons = [
-      "btn-prayer",
-      "btn-devotional",
-      "btn-questions",
-      "btn-game"
-    ].map(id => document.getElementById(id));
-    buttons.forEach(btn => btn.disabled = true);
-    outputEl.textContent = "Thinking… (generating " + type + ")";
-
-    // Grab verse text if available
-    let verseText = "";
-    const verseEl = document.getElementById("ourmanna-verse");
-    if (verseEl) {
-      verseText = verseEl.innerText || verseEl.textContent || "";
-    }
-
-    try {
-      const res = await fetch("/api/pc-ai", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type, verseText, shortMode })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        outputEl.textContent = "Error from server: " + (data.error || res.statusText);
-      } else {
-        outputEl.textContent = data.text || "No text returned.";
+        const data = await res.json();
+        if (!res.ok) {
+          outputEl.textContent = "Error from server: " + (data.error || res.statusText);
+        } else {
+          outputEl.textContent = data.text || "No text returned.";
+        }
+      } catch (err) {
+        console.error(err);
+        outputEl.textContent = "Network or server error: " + err.message;
+      } finally {
+        buttons.forEach(btn => btn.disabled = false);
       }
-    } catch (err) {
-      console.error(err);
-      outputEl.textContent = "Network or server error: " + err.message;
-    } finally {
-      buttons.forEach(btn => btn.disabled = false);
     }
-  }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    updateTodayLabel();
-    newPositiveThought();
-    newGame();
-  });
-</script>
+    // ---------- Init ----------
+    document.addEventListener("DOMContentLoaded", () => {
+      updateClock();
+      setInterval(updateClock, 1000); // update every second
+      loadWeather();
+    });
+  </script>
 </body>
 </html>
