@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>RAYLEIGH 12 PC Hub</title>
+  <title>Raleigh 12 PC Hub – Interactive</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Simple, clean styling -->
   <style>
     :root {
       --primary: #1e3a8a;
@@ -15,13 +14,10 @@
       --accent: #facc15;
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
+      --danger: #ef4444;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -33,27 +29,13 @@
       padding: 1rem;
     }
 
-    .app {
-      width: 100%;
-      max-width: 900px;
-      margin: auto;
-    }
+    .app { width: 100%; max-width: 1100px; margin: auto; }
 
-    header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
+    header { text-align: center; margin-bottom: 1.5rem; }
 
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
+    header h1 { font-size: 1.9rem; font-weight: 700; margin-bottom: 0.25rem; }
 
-    header p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
+    header p { font-size: 0.9rem; color: var(--text-muted); }
 
     .day-chip {
       display: inline-flex;
@@ -65,6 +47,18 @@
       border: 1px solid rgba(148, 163, 184, 0.4);
       font-size: 0.8rem;
       margin-top: 0.4rem;
+    }
+
+    .layout {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 880px) {
+      .layout {
+        grid-template-columns: 3fr 2.2fr;
+        align-items: start;
+      }
     }
 
     .grid {
@@ -79,10 +73,10 @@
     }
 
     .card {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.92);
       border-radius: 1rem;
       border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.85);
       padding: 1rem 1.1rem 1.1rem;
       display: flex;
       flex-direction: column;
@@ -116,13 +110,12 @@
 
     .card-body {
       font-size: 0.9rem;
-      line-height: 1.4;
+      line-height: 1.45;
       color: var(--text-main);
+      white-space: pre-line;
     }
 
-    .card-body p + p {
-      margin-top: 0.4rem;
-    }
+    .card-body p + p { margin-top: 0.4rem; }
 
     .hint {
       font-size: 0.75rem;
@@ -143,7 +136,7 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: white;
       box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
-      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.08s ease;
     }
 
     button:active {
@@ -158,16 +151,17 @@
       color: var(--text-main);
     }
 
-    .verse-ref {
-      font-size: 0.8rem;
-      color: var(--accent);
-      font-weight: 600;
-      margin-top: 0.35rem;
+    button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+      box-shadow: none;
     }
 
-    .verse-text {
-      font-size: 0.92rem;
-      font-weight: 500;
+    .small-caps {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
     .music-frame {
@@ -177,10 +171,7 @@
       margin-top: 0.4rem;
     }
 
-    iframe {
-      width: 100%;
-      border: 0;
-    }
+    iframe { width: 100%; border: 0; }
 
     .footer-note {
       text-align: center;
@@ -189,166 +180,289 @@
       color: var(--text-muted);
     }
 
-    .footer-note span {
-      color: var(--accent);
+    .footer-note span { color: var(--accent); }
+
+    .ai-output {
+      margin-top: 0.4rem;
+      padding: 0.55rem 0.6rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.85);
+      min-height: 60px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      overflow-y: auto;
+      max-height: 260px;
     }
 
-    .small-caps {
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 0.75rem;
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    .pill {
+      font-size: 0.72rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
       color: var(--text-muted);
+    }
+
+    .api-key-warning {
+      font-size: 0.75rem;
+      color: var(--danger);
+      margin-top: 0.3rem;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-row label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--primary-light);
+      cursor: pointer;
+    }
+
+    .api-key-input {
+      width: 100%;
+      margin-top: 0.4rem;
+      padding: 0.4rem 0.5rem;
+      border-radius: 0.6rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      font-size: 0.78rem;
+    }
+
+    .api-key-input::placeholder {
+      color: rgba(148, 163, 184, 0.8);
     }
   </style>
 
-  <!-- OurManna Verse of the Day JS widget (free Bible API) -->
+  <!-- OurManna Verse of the Day -->
   <script src="https://beta.ourmanna.com/verses/api/js/" type="text/javascript" defer></script>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>RAYLEIGH 12 PC Hub</h1>
-      <p>Pastaoral Care · Mon / Wed / Thu / Fri · ~10 minutes</p>
+      <h1>Raleigh 12 PC Hub</h1>
+      <p>Pastoral Care · Monday / Wednesday / Thursday / Friday · ~10 minutes</p>
       <div class="day-chip">
         <span id="today-label">Today</span>
       </div>
     </header>
 
-    <div class="grid">
-      <!-- Opening Prayer -->
-      <section class="card">
-        <div class="card-header">
-          <div class="card-title">
-            🙏 Opening Prayer
-          </div>
-          <span class="badge">Step 1</span>
-        </div>
-        <div class="card-body" id="prayer-text">
-          <p>Heavenly Father, thank You for this new day and for RAYLEIGH 12. Help us to honour You in our thoughts, words and actions today. Give us wisdom in our decisions, kindness in our friendships, and courage to do what is right.</p>
-          <p>Be with us in this PC time. Calm our hearts, clear our minds, and help us to grow together as a class. In Jesus’ name, Amen.</p>
-        </div>
-        <p class="hint">You can tweak this prayer anytime to suit what’s happening in your class.</p>
-      </section>
+    <div class="layout">
+      <!-- LEFT: Normal PC flow -->
+      <div>
+        <div class="grid">
+          <!-- Opening Prayer -->
+          <section class="card">
+            <div class="card-header">
+              <div class="card-title">🙏 Opening Prayer</div>
+              <span class="badge">Step 1</span>
+            </div>
+            <div class="card-body" id="prayer-text">
+              Heavenly Father, thank You for this new day and for Raleigh 12.
+              Help us to honour You in our thoughts, words and actions today.
+              Give us wisdom in our decisions, kindness in our friendships,
+              and courage to do what is right.
 
-      <!-- Verse of the Day (OurManna API) -->
-      <section class="card">
+              Be with us in this PC time. Calm our hearts, clear our minds,
+              and help us to grow together as a class. In Jesus’ name, Amen.
+            </div>
+            <p class="hint">Use this, or tap “Generate Prayer” on the right to create one for today's theme.</p>
+          </section>
+
+          <!-- Verse of the Day -->
+          <section class="card">
+            <div class="card-header">
+              <div class="card-title">📖 Verse & Reflection</div>
+              <span class="badge">Step 2</span>
+            </div>
+            <div class="card-body">
+              <div id="ourmanna-verse">Loading verse of the day…</div>
+              <p class="hint" id="verse-hint">
+                <strong>Discussion prompt:</strong> In one sentence, how could we live this verse out at school today?
+              </p>
+            </div>
+            <button type="button" class="outline-btn" onclick="nextVersePrompt()">
+              🔄 New discussion prompt
+            </button>
+          </section>
+
+          <!-- Positive Thought -->
+          <section class="card">
+            <div class="card-header">
+              <div class="card-title">🌟 Positive Thought</div>
+              <span class="badge">Step 3</span>
+            </div>
+            <div class="card-body">
+              <p id="positive-text">
+                Today is a fresh start. Yesterday’s mistakes are learning moments, not labels.
+                You have the chance to choose courage, kindness, and faith again today.
+              </p>
+              <p class="hint">Read it aloud, then ask: “What word or phrase stands out to you?”</p>
+            </div>
+            <button type="button" onclick="newPositiveThought()">
+              🔁 New positive thought
+            </button>
+          </section>
+
+          <!-- Music + Game -->
+          <section class="card">
+            <div class="card-header">
+              <div class="card-title">🎵 Music & Game of the Day</div>
+              <span class="badge">Step 4</span>
+            </div>
+            <div class="card-body">
+              <p class="small-caps">Background Music</p>
+              <p>Hit play on a worship / Christian lo-fi playlist while students get settled.</p>
+
+              <!-- Replace with your own playlist ID -->
+              <div class="music-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/videoseries?list=YOUR_PLAYLIST_ID_HERE"
+                  title="PC Background Playlist"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+
+              <p class="small-caps" style="margin-top:0.7rem;">Community Game of the Day</p>
+              <p id="game-text">
+                Stand Up If…  
+                Ask students to stand if statements apply to them (e.g. “You have a pet”,
+                “You like pineapple on pizza”, “You prefer beaches to mountains”).
+                Quick, fun, and shows what you have in common.
+              </p>
+              <p class="hint">Tap below for another quick game idea, or use the AI assistant to generate one.</p>
+            </div>
+            <button type="button" onclick="newGame()">🎲 New game idea</button>
+          </section>
+        </div>
+      </div>
+
+      <!-- RIGHT: AI-powered PC assistant -->
+      <aside class="card">
         <div class="card-header">
           <div class="card-title">
-            📖 Verse & Reflection
+            🤖 AI PC Assistant
           </div>
-          <span class="badge">Step 2</span>
+          <span class="badge">Teacher tools</span>
         </div>
+
         <div class="card-body">
-          <div id="ourmanna-verse">Loading verse of the day…</div>
-          <p class="hint">
-            <strong>Discussion prompt:</strong> In one sentence, how could we live this verse out at school today?
+          <p class="small-caps">API Key</p>
+          <input
+            type="password"
+            id="api-key"
+            class="api-key-input"
+            placeholder="Paste your OpenAI API key here (kept only in this browser tab)"
+          />
+          <p class="api-key-warning">
+            For production, move the key to a backend route. This is okay as a teacher-only prototype.
           </p>
-        </div>
-        <button type="button" class="outline-btn" onclick="nextVersePrompt()">
-          New discussion prompt
-        </button>
-      </section>
 
-      <!-- Positive Thought -->
-      <section class="card">
-        <div class="card-header">
-          <div class="card-title">
-            🌟 Positive Thought
-          </div>
-          <span class="badge">Step 3</span>
-        </div>
-        <div class="card-body">
-          <p id="positive-text">
-            Today is a fresh start. Yesterday’s mistakes are learning moments, not labels. You have the chance to choose courage, kindness, and faith again today.
-          </p>
-          <p class="hint">
-            Read it aloud, then ask: “What word or phrase stands out to you?”
-          </p>
-        </div>
-        <button type="button" onclick="newPositiveThought()">
-          🔁 New positive thought
-        </button>
-      </section>
-
-      <!-- Music + Game -->
-      <section class="card">
-        <div class="card-header">
-          <div class="card-title">
-            🎵 Music & Game of the Day
-          </div>
-          <span class="badge">Step 4</span>
-        </div>
-        <div class="card-body">
-          <p class="small-caps">Background Music</p>
-          <p>Hit play on a short worship / Christian lo-fi playlist while students get settled.</p>
-
-          <!-- Replace the playlist ID with your own YouTube/Spotify embed -->
-          <div class="music-frame">
-            <iframe
-              src="https://www.youtube.com/embed/videoseries?list=YOUR_PLAYLIST_ID_HERE"
-              title="PC Background Playlist"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen
-            ></iframe>
+          <div class="toggle-row">
+            <label>
+              <input type="checkbox" id="short-mode" checked />
+              Prefer short, PC-length answers
+            </label>
           </div>
 
-          <p class="small-caps" style="margin-top:0.7rem;">Community Game of the Day</p>
-          <p id="game-text">
-            Stand Up If…  
-            Ask students to stand if statements apply to them (e.g. “You have a pet”, “You like pineapple on pizza”, “You prefer beaches to mountains”). Quick, fun, and shows what you have in common.
-          </p>
+          <div class="pill-row">
+            <div class="pill">Year level: 12</div>
+            <div class="pill">Christian school</div>
+            <div class="pill">10-minute PC</div>
+            <div class="pill">Raleigh 12</div>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid rgba(148,163,184,0.4); margin:0.6rem 0;" />
+
+          <p class="small-caps">Generate</p>
+          <div style="display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.35rem;">
+            <button type="button" class="outline-btn" id="btn-prayer" onclick="generateFromAI('prayer')">
+              🕊 Prayer
+            </button>
+            <button type="button" class="outline-btn" id="btn-devotional" onclick="generateFromAI('devotional')">
+              📖 Devotional thought
+            </button>
+            <button type="button" class="outline-btn" id="btn-questions" onclick="generateFromAI('questions')">
+              💬 Discussion questions
+            </button>
+            <button type="button" class="outline-btn" id="btn-game" onclick="generateFromAI('game')">
+              🎲 Community game
+            </button>
+          </div>
+
+          <div class="ai-output" id="ai-output">
+            AI output will appear here. Use it live with the class or copy into Compass.
+          </div>
+
           <p class="hint">
-            Use one game per day. Keep them short and light-hearted.
+            Tip: you can still use the fixed content on the left, then use the AI panel when you want
+            something tailored to that day (e.g. “stress before exams”, “friendship issues”, etc.).
           </p>
         </div>
-        <button type="button" onclick="newGame()">
-          🎲 New game idea
-        </button>
-      </section>
+      </aside>
     </div>
 
     <p class="footer-note">
       <span>Verse of the Day</span> provided by OurManna Bible API.  
-      This page is built for quick PC use and is mobile-friendly for teacher phones.
+      AI content powered by OpenAI (configured for Christian, age-appropriate PC use).
     </p>
   </div>
 
   <script>
-    // ----- Day label -----
-    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const pcDays = ["Monday", "Wednesday", "Thursday", "Friday"];
+    // ---------- Day label ----------
+    const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    const pcDays = ["Monday","Wednesday","Thursday","Friday"];
 
     function updateTodayLabel() {
       const now = new Date();
       const dayName = dayNames[now.getDay()];
       const label = document.getElementById("today-label");
-
       if (pcDays.includes(dayName)) {
-        label.textContent = `${dayName} · PC today`;
+        label.textContent = dayName + " · PC today";
       } else {
-        label.textContent = `${dayName} · No scheduled PC (optional)`;
+        label.textContent = dayName + " · No scheduled PC (optional)";
       }
     }
 
-    // ----- Verse discussion prompts -----
+    // ---------- Verse discussion prompts ----------
     const versePrompts = [
       "What word or phrase in this verse stands out to you the most? Why?",
-      "How could this verse shape the way we treat each other in RAYLEIGH 12 today?",
+      "How could this verse shape the way we treat each other in Raleigh 12 today?",
       "If you lived this verse fully for one school day, what would change?",
       "What does this verse show you about God’s character?",
       "Is there a simple, practical action you could take today because of this verse?"
     ];
 
     function nextVersePrompt() {
-      const hint = document.querySelector(
-        "#ourmanna-verse ~ .hint, section:nth-of-type(2) .hint"
-      );
-      if (!hint) return;
+      const hint = document.getElementById("verse-hint");
       const random = versePrompts[Math.floor(Math.random() * versePrompts.length)];
       hint.innerHTML = "<strong>Discussion prompt:</strong> " + random;
     }
 
-    // ----- Positive thoughts (local, no API needed) -----
+    // ---------- Positive thoughts ----------
     const positiveThoughts = [
       "You are not here by accident. God has placed you in this PC, in this school, in this year for a reason.",
       "Small consistent choices — saying sorry, including someone, telling the truth — shape the person you become.",
@@ -363,7 +477,7 @@
       el.textContent = random;
     }
 
-    // ----- Community games (local list) -----
+    // ---------- Community games ----------
     const games = [
       "Two Truths and a Dream: Students share two true facts about themselves and one thing they’d like to do or achieve. The group guesses which is the dream.",
       "This or That: Quickly go around the room with choices (Beach or mountains? Pizza or burgers? Morning or night?). Students move to a side of the room or raise hands.",
@@ -379,7 +493,113 @@
       el.textContent = random;
     }
 
-    // Initialise on page load
+    // ---------- AI calls ----------
+    async function generateFromAI(type) {
+      const apiKey = document.getElementById("api-key").value.trim();
+      const shortMode = document.getElementById("short-mode").checked;
+      const outputEl = document.getElementById("ai-output");
+
+      if (!apiKey) {
+        outputEl.textContent = "Please paste your OpenAI API key first.";
+        return;
+      }
+
+      // Disable buttons during call
+      const buttons = [
+        "btn-prayer",
+        "btn-devotional",
+        "btn-questions",
+        "btn-game"
+      ].map(id => document.getElementById(id));
+      buttons.forEach(btn => btn.disabled = true);
+      outputEl.textContent = "Thinking… (generating " + type + ")";
+
+      // Grab verse text if available to feed into context
+      let verseText = "";
+      const verseEl = document.getElementById("ourmanna-verse");
+      if (verseEl) {
+        verseText = verseEl.innerText || verseEl.textContent || "";
+      }
+
+      // Build the prompt
+      let userInstruction = "";
+      switch (type) {
+        case "prayer":
+          userInstruction =
+            "Write a short opening prayer for a Year 12 pastoral care class (Raleigh 12) in a Christian school. " +
+            "Be warm, simple and age-appropriate. Mention school life and friendships. Keep it suitable to be read aloud by a teacher in under 45 seconds.";
+          break;
+        case "devotional":
+          userInstruction =
+            "Write a short devotional thought for a Year 12 pastoral care group based on the Bible text below. " +
+            "1–2 short paragraphs, clear and practical, focused on how students might live this out at school today. " +
+            "Finish with one simple reflection question.\n\nBible text:\n" + verseText;
+          break;
+        case "questions":
+          userInstruction =
+            "Create 4–6 short discussion questions for a Year 12 pastoral care group in a Christian school. " +
+            "Questions should be simple, open-ended, and safe for a mixed class. Aim to help them reflect on faith, character, and school life. " +
+            "Number the questions 1–6.";
+          break;
+        case "game":
+          userInstruction =
+            "Suggest one quick, low-prep community-building game for a Year 12 pastoral care class (approx 5 minutes). " +
+            "The game must be classroom-safe, require no special equipment, and be inclusive of quieter students. " +
+            "Explain the steps clearly in bullet points.";
+          break;
+        default:
+          userInstruction = "Provide a short, encouraging Christian thought for a Year 12 pastoral care class.";
+      }
+
+      if (shortMode) {
+        userInstruction += "\n\nKeep the response concise enough to read in under 2 minutes.";
+      }
+
+      try {
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + apiKey
+          },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are a Christian teacher assistant helping run a 10-minute pastoral care (PC) session " +
+                  "for a Year 12 class in an Australian Christian school. Keep everything age-appropriate, " +
+                  "kind, and aligned with a general evangelical Christian worldview. Avoid controversial topics. " +
+                  "Write in clear, spoken English that a teacher can read aloud."
+              },
+              {
+                role: "user",
+                content: userInstruction
+              }
+            ],
+            temperature: 0.7,
+            max_tokens: 450
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          outputEl.textContent = "Error from OpenAI: " + errorText;
+        } else {
+          const data = await response.json();
+          const text = data.choices?.[0]?.message?.content?.trim() || "No response text.";
+          outputEl.textContent = text;
+        }
+      } catch (err) {
+        console.error(err);
+        outputEl.textContent = "Network or API error: " + err.message;
+      } finally {
+        buttons.forEach(btn => btn.disabled = false);
+      }
+    }
+
+    // ---------- Init ----------
     document.addEventListener("DOMContentLoaded", () => {
       updateTodayLabel();
       newPositiveThought();
