@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Raleigh 12 PC Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Simple, clean styling -->
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --bg: #0f172a;
+      --card-bg: #111827;
+      --accent: #facc15;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1d4ed8 0, #020617 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .day-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 720px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.8);
+      padding: 1rem 1.1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-muted);
+    }
+
+    .card-body {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: var(--text-main);
+    }
+
+    .card-body p + p {
+      margin-top: 0.4rem;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 0.5rem 0.9rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.6);
+    }
+
+    .outline-btn {
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      box-shadow: none;
+      color: var(--text-main);
+    }
+
+    .verse-ref {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 0.35rem;
+    }
+
+    .verse-text {
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+
+    .music-frame {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      margin-top: 0.4rem;
+    }
+
+    iframe {
+      width: 100%;
+      border: 0;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 1.3rem;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .footer-note span {
+      color: var(--accent);
+    }
+
+    .small-caps {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
+
+  <!-- OurManna Verse of the Day JS widget (free Bible API) -->
+  <script src="https://beta.ourmanna.com/verses/api/js/" type="text/javascript" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Raleigh 12 PC Hub</h1>
+      <p>Pastaoral Care · Mon / Wed / Thu / Fri · ~10 minutes</p>
+      <div class="day-chip">
+        <span id="today-label">Today</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Opening Prayer -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">
+            🙏 Opening Prayer
+          </div>
+          <span class="badge">Step 1</span>
+        </div>
+        <div class="card-body" id="prayer-text">
+          <p>Heavenly Father, thank You for this new day and for Raleigh 12. Help us to honour You in our thoughts, words and actions today. Give us wisdom in our decisions, kindness in our friendships, and courage to do what is right.</p>
+          <p>Be with us in this PC time. Calm our hearts, clear our minds, and help us to grow together as a class. In Jesus’ name, Amen.</p>
+        </div>
+        <p class="hint">You can tweak this prayer anytime to suit what’s happening in your class.</p>
+      </section>
+
+      <!-- Verse of the Day (OurManna API) -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">
+            📖 Verse & Reflection
+          </div>
+          <span class="badge">Step 2</span>
+        </div>
+        <div class="card-body">
+          <div id="ourmanna-verse">Loading verse of the day…</div>
+          <p class="hint">
+            <strong>Discussion prompt:</strong> In one sentence, how could we live this verse out at school today?
+          </p>
+        </div>
+        <button type="button" class="outline-btn" onclick="nextVersePrompt()">
+          New discussion prompt
+        </button>
+      </section>
+
+      <!-- Positive Thought -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">
+            🌟 Positive Thought
+          </div>
+          <span class="badge">Step 3</span>
+        </div>
+        <div class="card-body">
+          <p id="positive-text">
+            Today is a fresh start. Yesterday’s mistakes are learning moments, not labels. You have the chance to choose courage, kindness, and faith again today.
+          </p>
+          <p class="hint">
+            Read it aloud, then ask: “What word or phrase stands out to you?”
+          </p>
+        </div>
+        <button type="button" onclick="newPositiveThought()">
+          🔁 New positive thought
+        </button>
+      </section>
+
+      <!-- Music + Game -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">
+            🎵 Music & Game of the Day
+          </div>
+          <span class="badge">Step 4</span>
+        </div>
+        <div class="card-body">
+          <p class="small-caps">Background Music</p>
+          <p>Hit play on a short worship / Christian lo-fi playlist while students get settled.</p>
+
+          <!-- Replace the playlist ID with your own YouTube/Spotify embed -->
+          <div class="music-frame">
+            <iframe
+              src="https://www.youtube.com/embed/videoseries?list=YOUR_PLAYLIST_ID_HERE"
+              title="PC Background Playlist"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <p class="small-caps" style="margin-top:0.7rem;">Community Game of the Day</p>
+          <p id="game-text">
+            Stand Up If…  
+            Ask students to stand if statements apply to them (e.g. “You have a pet”, “You like pineapple on pizza”, “You prefer beaches to mountains”). Quick, fun, and shows what you have in common.
+          </p>
+          <p class="hint">
+            Use one game per day. Keep them short and light-hearted.
+          </p>
+        </div>
+        <button type="button" onclick="newGame()">
+          🎲 New game idea
+        </button>
+      </section>
+    </div>
+
+    <p class="footer-note">
+      <span>Verse of the Day</span> provided by OurManna Bible API.  
+      This page is built for quick PC use and is mobile-friendly for teacher phones.
+    </p>
+  </div>
+
+  <script>
+    // ----- Day label -----
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const pcDays = ["Monday", "Wednesday", "Thursday", "Friday"];
+
+    function updateTodayLabel() {
+      const now = new Date();
+      const dayName = dayNames[now.getDay()];
+      const label = document.getElementById("today-label");
+
+      if (pcDays.includes(dayName)) {
+        label.textContent = `${dayName} · PC today`;
+      } else {
+        label.textContent = `${dayName} · No scheduled PC (optional)`;
+      }
+    }
+
+    // ----- Verse discussion prompts -----
+    const versePrompts = [
+      "What word or phrase in this verse stands out to you the most? Why?",
+      "How could this verse shape the way we treat each other in Raleigh 12 today?",
+      "If you lived this verse fully for one school day, what would change?",
+      "What does this verse show you about God’s character?",
+      "Is there a simple, practical action you could take today because of this verse?"
+    ];
+
+    function nextVersePrompt() {
+      const hint = document.querySelector(
+        "#ourmanna-verse ~ .hint, section:nth-of-type(2) .hint"
+      );
+      if (!hint) return;
+      const random = versePrompts[Math.floor(Math.random() * versePrompts.length)];
+      hint.innerHTML = "<strong>Discussion prompt:</strong> " + random;
+    }
+
+    // ----- Positive thoughts (local, no API needed) -----
+    const positiveThoughts = [
+      "You are not here by accident. God has placed you in this PC, in this school, in this year for a reason.",
+      "Small consistent choices — saying sorry, including someone, telling the truth — shape the person you become.",
+      "Even on tough days, you are loved by God and valued by the people around you more than you realise.",
+      "You don’t have to be perfect today. You just have to be willing to learn, grow, and try again.",
+      "Kindness is never wasted. Someone in our school needs the kindness you can show today."
+    ];
+
+    function newPositiveThought() {
+      const el = document.getElementById("positive-text");
+      const random = positiveThoughts[Math.floor(Math.random() * positiveThoughts.length)];
+      el.textContent = random;
+    }
+
+    // ----- Community games (local list) -----
+    const games = [
+      "Two Truths and a Dream: Students share two true facts about themselves and one thing they’d like to do or achieve. The group guesses which is the dream.",
+      "This or That: Quickly go around the room with choices (Beach or mountains? Pizza or burgers? Morning or night?). Students move to a side of the room or raise hands.",
+      "Common Ground: In small groups, students have 2 minutes to find three things they all have in common that aren’t obvious (not uniforms or school).",
+      "High/Low/Thankful: Each student shares a high from the week, a low, and one thing they’re thankful for.",
+      "Silent Line-Up: Without talking, students line up in order of birthday (day/month), height, or alphabetical by first name.",
+      "Would You Rather – Values Edition: Ask fun but thoughtful questions (e.g. 'Would you rather have everyone be honest with you or always be kind to you? Why?')."
+    ];
+
+    function newGame() {
+      const el = document.getElementById("game-text");
+      const random = games[Math.floor(Math.random() * games.length)];
+      el.textContent = random;
+    }
+
+    // Initialise on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      updateTodayLabel();
+      newPositiveThought();
+      newGame();
+    });
+  </script>
+</body>
+</html>
